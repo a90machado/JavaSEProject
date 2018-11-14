@@ -15,8 +15,7 @@ public class Shelf {
 	 * {double price} price of the product in the shelf
 	 * 
 	 */
-	public Shelf(int id, int capacity, Product product, double price) {
-		this.id = id;
+	public Shelf(int capacity, Product product, double price) {
 		this.capacity = capacity;
 		this.product = product;
 		this.price = price;

@@ -43,15 +43,17 @@ public class TextInterface {
 
 		Scanner scanner = new Scanner(System.in);
 		int userAnswer = scanner.nextInt();
+		scanner.close();
 		
 		switch (userAnswer) {
 		case 1:
+			//TODO VERIFICAR VARIAVEIS
 			System.out.println("Insira desconto:");
-			double discontPrice = scanner.nextFloat();
+			double discontPrice = scanner.nextDouble();
 			System.out.println("Insira iva:");
-			double iva = scanner.nextFloat();
+			double iva = scanner.nextDouble();
 			System.out.println("Insira pvp:");
-			double pvp = scanner.nextFloat();
+			double pvp = scanner.nextDouble();
 			//TODO list of shelfs and id auto
 			Product newProduct = new Product(discontPrice, iva, pvp);
 			//TODO PUSH
@@ -73,9 +75,8 @@ public class TextInterface {
 			System.out.println("Valor introduzido errado, por favor repita.");
 			userInterfaceShowProducts();
 			break;
-		}
+		}	
 		
-		scanner.close();
 	}
 
 	private void userInterfaceShowShelfs() {
