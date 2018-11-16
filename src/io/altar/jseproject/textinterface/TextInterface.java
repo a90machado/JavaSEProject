@@ -6,7 +6,6 @@ import io.altar.jseproject.model.Shelf;
 
 public class TextInterface {
 	
-	
 	//-------------------------------------------------------------------------
 	public void userInterface() {
 		System.out.println("Por favor selecione uma das seguintes opções:");
