@@ -1,6 +1,5 @@
 package io.altar.jseproject.textinterface;
 import java.util.Scanner;
-
 import io.altar.jseproject.model.Product;
 import io.altar.jseproject.model.Shelf;
 
