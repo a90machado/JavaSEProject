@@ -26,7 +26,7 @@ public abstract class EntityRepository <T extends Entity> {
 		return baseDeDados.get(id);
 	}
 	
-	 public Iterator<T> findAll(){
+	 public Iterator<T> getAll(){
 		return baseDeDados.values().iterator();
 	}
 	

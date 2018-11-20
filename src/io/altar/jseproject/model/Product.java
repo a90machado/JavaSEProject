@@ -53,6 +53,11 @@ public class Product extends Entity {
 	public void setPvp(double pvp) {
 		this.pvp = pvp;
 	}
+
+	@Override
+	public String toString() {
+		return "Product "+this.getId()+" [discountPrice=" + discountPrice + ", iva=" + iva + ", pvp=" + pvp + "]";
+	}
 	
 	
 	
