@@ -1,5 +1,7 @@
 package io.altar.jseproject.model;
 
+import io.altar.jseproject.repositories.ProductRepository;
+
 public class Shelf extends Entity {
 	
 	// Attributes
@@ -14,9 +16,8 @@ public class Shelf extends Entity {
 	 * {double price} price of the product in the shelf
 	 * 
 	 */
-	public Shelf(int capacity, Product product, double price) {
+	public Shelf(int capacity, double price) {
 		this.capacity = capacity;
-		this.product = product;
 		this.price = price;
 	}
 
@@ -45,5 +46,12 @@ public class Shelf extends Entity {
 		this.price = price;
 	}
 	
-
+	public void addProduct(){
+		
+	}
+	
+	@Override
+	public String toString() {
+		return "Shelf "+this.getId()+" [capacity=" + capacity + ", price=" + price  + "]";
+	}
 }

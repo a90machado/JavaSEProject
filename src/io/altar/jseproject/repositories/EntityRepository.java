@@ -14,6 +14,14 @@ public abstract class EntityRepository <T extends Entity> {
 		return actualID++;
 	}
 	
+	//CHECK IF IS EMPTY
+	public boolean isEmpty(){
+		if (baseDeDados.isEmpty())
+			return true;
+			else
+				return false;
+	}
+	
 	//SAVE
 	public void save(T entity){
 		entity.setId(actualID);
