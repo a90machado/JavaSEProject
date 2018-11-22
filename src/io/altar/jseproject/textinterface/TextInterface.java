@@ -96,7 +96,7 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID do Produto a editar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistProducts(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 				}
@@ -147,7 +147,7 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID do Produto a consultar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistProducts(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 				}
@@ -173,15 +173,14 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID do Produto a eliminiar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistProducts(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 				}
 				long inputID = Long.parseLong(toTry);
 				Product showProduct = productRepository.findByID(inputID);
 
-				System.out
-						.println("Tem a certeza que deseja apagar este produto? " + showProduct.toString() + "(S/n) :");
+				System.out.println("Tem a certeza que deseja apagar este produto? " + showProduct.toString() + "(S/n) :");
 				String userConfirmation = scanner.nextLine();
 
 				while (!userConfirmation.equals("S") && !userConfirmation.equals("n")) {
@@ -238,7 +237,7 @@ public class TextInterface {
 			}
 			int capacity = Integer.parseInt(toTry);
 			
-			System.out.println("Insira preco:");
+			System.out.println("Insira preco do alueguer: ");
 			toTry = scanner.nextLine();
 			while (checkType(toTry, "Double") == false) {
 				System.out.println("Valor introduzido invalido, por favor repita: ");
@@ -248,9 +247,30 @@ public class TextInterface {
 			
 			Shelf newShelf = new Shelf(capacity, price);
 			shelfRepository.save(newShelf);
+			
+			System.out.println("Prateleira adicionado com sucesso!");
+			
+			if (productRepository.isEmpty()==true){
+				userInterfaceShowShelfs();
+			} else {
+				System.out.println("Deseja associar um produto?");
+				System.out.println("(Selecione o ID ou pressione ENTER para ignorar.)");
+				String userConfirmation = scanner.nextLine();
 
-			System.out.println("Produto adicionado com sucesso!");
-			userInterfaceShowShelfs();
+				while ((checkType(userConfirmation, "Long") == false && userConfirmation.length()>0 && checkIdExistProducts(userConfirmation)==false) ) {
+					System.out.println("Valor introduzido invalido, por favor repita: ");
+					userConfirmation = scanner.nextLine();
+				}
+				if (userConfirmation.length()==0){
+					userInterfaceShowShelfs();
+				} else {
+					long productID = Long.parseLong(userConfirmation);
+					newShelf.setProduct(productRepository.findByID(productID));
+					System.out.println("Produto adicionado com sucesso!");
+					userInterfaceShowShelfs();
+				}
+			}
+			
 			break;
 		case 2:
 			if (shelfRepository.isEmpty() == true) {
@@ -259,7 +279,7 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID do Produto a editar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistShelfs(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 					System.out.println(toTry);
@@ -300,7 +320,7 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID da Prateleira a consultar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistShelfs(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 				}
@@ -325,7 +345,7 @@ public class TextInterface {
 			} else {
 				System.out.print("Por favor insira o ID da Prateleira a eliminiar: ");
 				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExist(toTry) == false) {
+				while (checkType(toTry, "Long") == false || checkIdExistShelfs(toTry) == false) {
 					System.out.println("Valor introduzido invalido, por favor repita: ");
 					toTry = scanner.nextLine();
 				}
@@ -361,8 +381,16 @@ public class TextInterface {
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
-	private boolean checkIdExist(String id) {
-		if (productRepository.findByID(Long.parseLong(id)) != null || shelfRepository.findByID(Long.parseLong(id)) != null)
+	private boolean checkIdExistProducts(String id) {
+		if (productRepository.findByID(Long.parseLong(id)) != null)
+			return true;
+		else
+			return false;
+
+	}
+	
+	private boolean checkIdExistShelfs(String id) {
+		if (shelfRepository.findByID(Long.parseLong(id)) != null)
 			return true;
 		else
 			return false;

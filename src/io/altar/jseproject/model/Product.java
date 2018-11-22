@@ -1,32 +1,39 @@
 package io.altar.jseproject.model;
 
+import java.util.ArrayList;
+
 public class Product extends Entity {
 
 	// Attributes
-	private Shelf[] listShelfs;
+	private ArrayList<Long> listShelfs;
 	private double discountPrice;
 	private double iva;
 	private double pvp;
-	
-	/* Construct Shelf
-	 * {double discountPrice} Product discount
-	 * {double iva} iva hover the Product
-	 * {double pvp} pvp of the Product
+
+	/*
+	 * Construct Shelf {double discountPrice} Product discount {double iva} iva
+	 * hover the Product {double pvp} pvp of the Product
 	 * 
 	 */
 	public Product(double discountPrice, double iva, double pvp) {
-		
+		this.listShelfs = new ArrayList<Long>();
 		this.discountPrice = discountPrice;
 		this.iva = iva;
 		this.pvp = pvp;
 	}
 
-	//Getters and Setters
-	public Shelf[] getListShelfs() {
+	// Getters and Setters
+
+	public void addToListShelfs(Long e){
+		
+		this.listShelfs.add(e);
+	}
+
+	public ArrayList<Long> getListShelfs() {
 		return listShelfs;
 	}
 
-	public void setListShelfs(Shelf[] listShelfs) {
+	public void setListShelfs(ArrayList<Long> listShelfs) {
 		this.listShelfs = listShelfs;
 	}
 
@@ -56,9 +63,12 @@ public class Product extends Entity {
 
 	@Override
 	public String toString() {
-		return "Product "+this.getId()+" [discountPrice=" + discountPrice + ", iva=" + iva + ", pvp=" + pvp + "]";
+		if (this.getListShelfs()==null){
+			return "Product " + this.getId() + " [discountPrice=" + discountPrice + ", iva=" + iva + ", pvp=" + pvp +" " + "]";
+		}else{
+			return "Product " + this.getId() + " [discountPrice=" + discountPrice + ", iva=" + iva + ", pvp=" + pvp +" "+ getListShelfs().toString() + "]";
+		}
+		
 	}
-	
-	
-	
+
 }
