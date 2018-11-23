@@ -1,5 +1,7 @@
+// Packages:
 package io.altar.jseproject.textinterface;
 
+// Imports:
 import java.util.Iterator;
 import java.util.Scanner;
 import io.altar.jseproject.model.Product;
@@ -7,34 +9,47 @@ import io.altar.jseproject.model.Shelf;
 import io.altar.jseproject.repositories.ProductRepository;
 import io.altar.jseproject.repositories.ShelfRepository;
 
+// Class that implement the Interface with User
 public class TextInterface {
+	
+	// Attributes
+	String testInput;
+	int userAnswer;
+	long inputID;
+	
+	// Initializing
 	ProductRepository productRepository = ProductRepository.getInstance();
 	ShelfRepository shelfRepository = ShelfRepository.getInstance();
+	Scanner scanner = new Scanner(System.in);
 
-	// -------------------------------------------------------------------------
+	// Main Menu:
 	public void userInterface() {
+		// Show Menu:
 		System.out.println("Por favor selecione uma das seguintes opções:");
 		System.out.println("1) Listar produtos");
 		System.out.println("2) Listar prateleiras");
 		System.out.println("3) Sair");
-
-		Scanner scanner = new Scanner(System.in);
-		String toTry = scanner.nextLine();
-		int userAnswer = checkType(toTry, "Int") ? Integer.parseInt(toTry) : 4;
-
+		// Scan Input:
+		testInput = scanner.nextLine();
+		// Test Input:
+		userAnswer = checkType(testInput, "Int") ? Integer.parseInt(testInput) : 4;
+		
+		// Actions:
 		switch (userAnswer) {
 		case 1:
+			// Products Menu:
 			userInterfaceShowProducts();
 			break;
 		case 2:
+			// Shelf Menu:
 			userInterfaceShowShelfs();
 			break;
 		case 3:
-			// System.exit(0);
+			// System out:
 			System.out.println("<>===Software desligado com sucesso!===<>");
 			break;
 		default:
-			// TODO : Clear console
+			// Wrong value Input:
 			System.out.println("Valor introduzido errado, por favor repita.");
 			userInterface();
 			break;
@@ -43,14 +58,20 @@ public class TextInterface {
 	}
 	// -------------------------------------------------------------------------
 
-	// -------------------------------------------------------------------------
+	// Products Menu:
 	private void userInterfaceShowProducts() {
+		// Initializing:
 		Iterator<Product> productIterator = productRepository.getAll();
+		
+		// Attributes:
+		double discontPrice, iva, pvp;
 
+		// Show all Products:
 		while (productIterator.hasNext()) {
 			System.out.println(productIterator.next().toString());
 		}
-
+		
+		// Show Menu:
 		System.out.println("Por favor selecione uma das seguintes opções:");
 		System.out.println("1) Criar novo produto");
 		System.out.println("2) Editar um produto existente");
@@ -58,35 +79,35 @@ public class TextInterface {
 		System.out.println("4) Remover um produto");
 		System.out.println("5) Voltar ao menu anterior");
 
-		Scanner scanner = new Scanner(System.in);
-		String toTry = scanner.nextLine();
-		int userAnswer = checkType(toTry, "Int") ? Integer.parseInt(toTry) : 6;
+		// Scan Input:
+		testInput = scanner.nextLine();
+		// Test Input:
+		userAnswer = checkType(testInput, "Int") ? Integer.parseInt(testInput) : 6;
+		
+		// Actions:
 		switch (userAnswer) {
 		case 1:
+			// New Product Options:
 			System.out.println("Insira desconto:");
-			toTry = scanner.nextLine();
-			while (checkType(toTry, "Double") == false) {
-				System.out.println("Valor introduzido invalido, por favor repita: ");
-				toTry = scanner.nextLine();
-			}
-			double discontPrice = Double.parseDouble(toTry);
+			testInput = scanner.nextLine();
+			discontPrice = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+			
 			System.out.println("Insira iva:");
-			toTry = scanner.nextLine();
-			while (checkType(toTry, "Double") == false) {
-				System.out.println("Valor introduzido invalido, por favor repita: ");
-				toTry = scanner.nextLine();
-			}
-			double iva = Double.parseDouble(toTry);
+			testInput = scanner.nextLine();
+			iva = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+			
 			System.out.println("Insira pvp:");
-			toTry = scanner.nextLine();
-			while (checkType(toTry, "Double") == false) {
-				System.out.println("Valor introduzido invalido, por favor repita: ");
-				toTry = scanner.nextLine();
-			}
-			double pvp = Double.parseDouble(toTry);
+			testInput = scanner.nextLine();
+			pvp = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+			//-------------------------------------------------------------
+			
+			// New Object Product:
 			Product newProduct = new Product(discontPrice, iva, pvp);
+			// Save Product into Products Rep:
 			productRepository.save(newProduct);
 			System.out.println("Produto adicionado com sucesso!");
+			
+			// Show Products Menu:
 			userInterfaceShowProducts();
 			break;
 		case 2:
@@ -94,48 +115,46 @@ public class TextInterface {
 				System.out.println("Nao existem produtos para editar.");
 				userInterfaceShowProducts();
 			} else {
+				// Check the Product to edit:
 				System.out.print("Por favor insira o ID do Produto a editar: ");
-				toTry = scanner.nextLine();
-				while (checkType(toTry, "Long") == false || checkIdExistProducts(toTry) == false) {
-					System.out.println("Valor introduzido invalido, por favor repita: ");
-					toTry = scanner.nextLine();
-				}
-				long inputID = Long.parseLong(toTry);
+				
+				
+				do{
+					testInput = scanner.nextLine();
+					testInput = repeatWhileWrong(testInput, "Long");
+				} while (checkIdExistProducts(testInput)==false);
+				
+				inputID = Long.parseLong(repeatWhileWrong(testInput,"Long"));
+				
+				
+				// Create Object with the Product to edit:
 				Product oldProduct = productRepository.findByID(inputID);
+				
+				// Edit Values:
 				System.out.print("Preco de Desconto " + oldProduct.getDiscountPrice() + " :");
-				toTry = scanner.nextLine();
-				if (toTry.equals("")) {
+				testInput = scanner.nextLine();
+				if (testInput.equals("")) {
 				} else {
-					while (checkType(toTry, "Double") == false) {
-						System.out.println("Valor introduzido invalido, por favor repita: ");
-						toTry = scanner.nextLine();
-					}
-					Double editDiscount = Double.parseDouble(toTry);
-					oldProduct.setDiscountPrice(editDiscount);
+					discontPrice = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+					oldProduct.setDiscountPrice(discontPrice);
 				}
+				//---------------------------------------------------------------------------
 				System.out.print("IVA " + oldProduct.getIva() + " :");
-				toTry = scanner.nextLine();
-				if (toTry.equals("")) {
+				testInput = scanner.nextLine();
+				if (testInput.equals("")) {
 				} else {
-					while (checkType(toTry, "Double") == false) {
-						System.out.println("Valor introduzido invalido, por favor repita: ");
-						toTry = scanner.nextLine();
-					}
-					Double editIVA = Double.parseDouble(toTry);
-					oldProduct.setIva(editIVA);
+					iva = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+					oldProduct.setIva(iva);
 				}
+				//---------------------------------------------------------------------------
 				System.out.print("Preco de Venda " + oldProduct.getPvp() + " :");
-				toTry = scanner.nextLine();
-				if (toTry.equals("")) {
-
+				testInput = scanner.nextLine();
+				if (testInput.equals("")) {
 				} else {
-					while (checkType(toTry, "Double") == false) {
-						System.out.println("Valor introduzido invalido, por favor repita: ");
-						toTry = scanner.nextLine();
-					}
-					Double editPVP = Double.parseDouble(toTry);
-					oldProduct.setPvp(editPVP);
+					pvp = Double.parseDouble(repeatWhileWrong(testInput,"Double"));
+					oldProduct.setPvp(pvp);
 				}
+				//---------------------------------------------------------------------------
 				System.out.println("Produto editado com sucesso!");
 				userInterfaceShowProducts();
 			}
@@ -381,20 +400,33 @@ public class TextInterface {
 
 	// -------------------------------------------------------------------------
 	// -------------------------------------------------------------------------
+	
+	
 	private boolean checkIdExistProducts(String id) {
 		if (productRepository.findByID(Long.parseLong(id)) != null)
 			return true;
 		else
+			System.out.println("O id nao existe!");
 			return false;
-
 	}
 	
 	private boolean checkIdExistShelfs(String id) {
 		if (shelfRepository.findByID(Long.parseLong(id)) != null)
 			return true;
-		else
+		else{
+			
 			return false;
+		}
+			
 
+	}
+	
+	private String repeatWhileWrong(String input, String match){
+		while (checkType(input, match)==false){
+			System.out.println("Valor Errado: ");
+			testInput = scanner.nextLine();
+		}
+		return testInput;
 	}
 
 	private boolean checkType(String value, String match) {

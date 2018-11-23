@@ -1,24 +1,18 @@
+// Packages:
 package io.altar.jseproject.model;
 
+//Class Model Shelf
 public class Shelf extends Entity {
 	
-	// Attributes
+	// Fields:
 	private int capacity;
 	private Product product;
 	private double price;
 	
-	/* Construct Shelf
-	 * {int id} id of the shelf
-	 * {int capacity} capacity of the shelf
-	 * {Product product} Product in the shelf
-	 * {double price} price of the product in the shelf
-	 * 
-	 */
+	// Constructor:
 	public Shelf(int capacity, double price) {
 		this.capacity = capacity;
 		this.price = price;
-		
-		
 	}
 
 	//Getters and Setters
@@ -29,7 +23,7 @@ public class Shelf extends Entity {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-
+	//-------------------------------------------------------
 	public Product getProduct() {
 		return product;
 	}
@@ -38,7 +32,7 @@ public class Shelf extends Entity {
 		this.product = product;
 		this.product.addToListShelfs(this.getId());
 	}
-
+	//-------------------------------------------------------
 	public double getPrice() {
 		return price;
 	}
@@ -46,7 +40,9 @@ public class Shelf extends Entity {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	//-------------------------------------------------------
 	
+	// Override method toString:
 	@Override
 	public String toString() {
 		if (this.getProduct()==null){

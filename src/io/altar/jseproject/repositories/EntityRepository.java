@@ -1,53 +1,59 @@
+// Packages:
 package io.altar.jseproject.repositories;
 
+// Imports:
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import io.altar.jseproject.model.Entity;
 
+// Abstract Class - Data Base CRUD
 public abstract class EntityRepository <T extends Entity> {
-	private Map<Long, T>  baseDeDados = new HashMap<Long, T>();
 	
+	// Fields:
+	private Map<Long, T>  baseDeDados = new HashMap<Long, T>();
 	private long actualID = 0;
 	
-	private long nextID(){
-		return actualID++;
-	}
-	
+	// Get ID:
 	public long getActualID() {
 		return actualID;
 	}
+	
+	// Prepare for next ID
+	private long nextID(){
+		return actualID++;
+	}
 
-	//CHECK IF IS EMPTY
+	// Check if is empty:
 	public boolean isEmpty(){
 		if (baseDeDados.isEmpty())
-			return true;
-			else
-				return false;
+		{return true;}else{
+			return false;}
 	}
 	
-	//SAVE
+	// Save:
 	public void save(T entity){
 		entity.setId(actualID);
 		baseDeDados.put(entity.getId(), entity);
 		nextID();
 	}
 	
-	//FIND
+	// Find:
 	public T findByID(Long id){
 		return baseDeDados.get(id);
 	}
 	
+	// Get all:
 	 public Iterator<T> getAll(){
 		return baseDeDados.values().iterator();
 	}
 	
-	 //EDIT
+	 // Edit:
 	 public void updateByID (T entity){
 		 baseDeDados.replace(entity.getId(), entity);
 	 }
 	 
-	 //REMOVE
+	 // Remove:
 	 public void removeByID (Long id){
 		 baseDeDados.remove(id);
 	 }
