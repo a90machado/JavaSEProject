@@ -16,6 +16,7 @@ public class TextInterface {
 	String testInput;
 	int userAnswer;
 	long inputID;
+	String userConfirmation;
 	
 	// Initializing
 	ProductRepository productRepository = ProductRepository.getInstance();
@@ -117,12 +118,12 @@ public class TextInterface {
 			} else {
 				// Check the Product to edit:
 				System.out.print("Por favor insira o ID do Produto a editar: ");
-				
-				
-				do{
+				testInput = scanner.nextLine();
+				testInput = repeatWhileWrong(testInput, "Long");
+				while (checkIdExistProducts(testInput)==false){
 					testInput = scanner.nextLine();
 					testInput = repeatWhileWrong(testInput, "Long");
-				} while (checkIdExistProducts(testInput)==false);
+				}
 				
 				inputID = Long.parseLong(repeatWhileWrong(testInput,"Long"));
 				
